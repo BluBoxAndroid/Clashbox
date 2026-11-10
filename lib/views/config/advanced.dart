@@ -1,0 +1,80 @@
+import 'package:clashbox/common/common.dart';
+import 'package:clashbox/ui/icons/icons.dart';
+import 'package:clashbox/ui/ui.dart';
+import 'package:clashbox/views/config/dns.dart';
+import 'package:clashbox/views/config/filters.dart';
+import 'package:clashbox/views/config/icon_sets.dart';
+import 'package:clashbox/views/config/mitm.dart';
+import 'package:clashbox/views/config/network.dart';
+import 'package:clashbox/views/profiles/custom/custom_proxies.dart';
+import 'package:flutter/widgets.dart';
+
+import 'rules.dart';
+
+class AdvancedConfigView extends StatelessWidget {
+  const AdvancedConfigView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final appLocalizations = context.appLocalizations;
+    final items = [
+      ListItem.open(
+        title: Text(appLocalizations.network),
+        leading: const GlyphIcon(AppGlyphs.key),
+        widget: BaseScaffold(
+          title: appLocalizations.network,
+          body: const NetworkListView(),
+        ),
+      ),
+      ListItem.open(
+        title: const Text('DNS'),
+        leading: const GlyphIcon(AppGlyphs.dns),
+        widget: const DnsView(),
+      ),
+      ListItem.open(
+        title: Text(appLocalizations.addedRules),
+        leading: const GlyphIcon(AppGlyphs.rules),
+        widget: const AddedRulesView(),
+      ),
+      if (mitmFeature)
+        ListItem.open(
+          title: Text(appLocalizations.mitm),
+          leading: const GlyphIcon(AppGlyphs.lockOpen),
+          widget: MitmView(isAndroid: system.isAndroid),
+        ),
+    ];
+    final customItems = [
+      ListItem.open(
+        title: Text(appLocalizations.proxies),
+        leading: const GlyphIcon(AppGlyphs.proxies),
+        widget: const CustomProxiesView(),
+      ),
+      ListItem.open(
+        title: Text(appLocalizations.filters),
+        leading: const GlyphIcon(AppGlyphs.filter),
+        widget: const FiltersView(),
+      ),
+      ListItem.open(
+        title: Text(appLocalizations.iconSets),
+        leading: const GlyphIcon(AppGlyphs.photos),
+        widget: const IconSetsView(),
+      ),
+    ];
+    return BaseScaffold(
+      title: appLocalizations.advancedConfig,
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(
+          top: context.sectionsTopPadding,
+          bottom: 16 + context.bottomInset,
+        ),
+        children: [
+          generateSection(items: items),
+          generateSection(
+            title: appLocalizations.customResources,
+            items: customItems,
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_starting">Starting</string>
+    <string name="status_stopping">Stopping</string>
+    <string name="status_started">Started</string>
+    <string name="stop">Stop</string>
+</resources>
